@@ -1,42 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
-import { Box, Container, createTheme, CssBaseline, Grid, Paper, ThemeProvider } from '@mui/material'
+import { Box, Container, createTheme, CssBaseline, Grid, Paper, ThemeProvider, Typography } from '@mui/material'
+import { Route, Routes, Outlet, useNavigate, BrowserRouter } from 'react-router-dom';
+import Dashboard from './Pages/Dashboard';
+import LoginPage from './Pages/LoginPage';
 const mdTheme = createTheme();
 function App() {
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 240,
-                }}
-              >
-                sfasdf
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 240,
-                }}
-              >
-                sadf
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box></ThemeProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route exact path="/" element={<Dashboard />} />
+            <Route exact path="login" element={<LoginPage />} />
+          </Routes>
+        </BrowserRouter>
+      </Box>
+    </ThemeProvider>
   );
 }
 
