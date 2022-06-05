@@ -1,9 +1,13 @@
 import { Box, SvgIcon } from '@mui/material';
 import React from 'react';
+import audio1 from './src_siren.mp3';
 import { useGauge } from 'use-gauge';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 const START_ANGLE = 45;
 const END_ANGLE = 315;
-
+let count = 0;
+const MySwal = withReactContent(Swal);
 const Device = ({ value = 0, name = 'test', unit = 't' }) => {
   const gauge = useGauge({
     domain: [0, 1000],
@@ -17,6 +21,23 @@ const Device = ({ value = 0, name = 'test', unit = 't' }) => {
     baseRadius: 12,
     tipRadius: 2,
   });
+  if (name === 'wattage_difference' && value > 20) {
+    count++;
+    if (count > 2) {
+      count = 0;
+      MySwal.fire({
+        title: 'Theft detected ',
+        text: 'Fix It',
+        icon: 'error',
+        backdrop: false,
+        confirmButtonText: 'YES',
+      }).then(result => {
+        if (result.isConfirmed) {
+          Swal.fire('Fixed!', 'success');
+        }
+      });
+    }
+  }
   return (
     <Box
       sx={{
@@ -24,6 +45,13 @@ const Device = ({ value = 0, name = 'test', unit = 't' }) => {
         alignItems: 'center',
         flexDirection: 'column',
       }}>
+      {count > 3 ? (
+        <audio preload="auto" autoplay="true" src={audio1}>
+          Your browser does not support the HTML5 audio element.
+        </audio>
+      ) : (
+        ''
+      )}
       <SvgIcon
         {...gauge.getSVGProps()}
         sx={{
